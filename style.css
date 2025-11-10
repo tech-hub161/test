@@ -239,3 +239,13 @@ button:hover {
         align-items: stretch;
     }
 }
+
+footer {
+    background-color: #fff;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px 0;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

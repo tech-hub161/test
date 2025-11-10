@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeModalBtn = document.querySelector('.close-btn');
     const chartContainer = document.getElementById('chart-container');
     const chartTitle = document.getElementById('chart-title');
+    const reportBtn = document.getElementById('report-btn');
 
     let customerCount = 1;
 
@@ -228,6 +229,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target == modal) {
             modal.style.display = 'none';
         }
+    });
+
+    reportBtn.addEventListener('click', () => {
+        document.getElementById('report-section').scrollIntoView({ behavior: 'smooth' });
     });
 
     // Initial Load
