@@ -9,6 +9,10 @@
 <body>
     <header>
         <marquee class="marquee">Welcome to Daily Business Snapshot</marquee>
+        <div class="header-controls">
+            <label for="date-picker">Select Date:</label>
+            <input type="date" id="date-picker">
+        </div>
     </header>
 
     <main>
@@ -31,37 +35,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Customer 1</td>
-                        <td><input type="number" class="editable" data-column="purchase" value="0"></td>
-                        <td><input type="number" class="editable" data-column="return" value="0"></td>
-                        <td><input type="number" class="calculated" data-column="sell" value="0" readonly></td>
-                        <td><input type="number" class="editable" data-column="rate" value="0"></td>
-                        <td><input type="number" class="calculated" data-column="net-value" value="0" readonly></td>
-                        <td><input type="number" class="editable" data-column="vc" value="0"></td>
-                        <td><input type="number" class="editable" data-column="due" value="0"></td>
-                        <td><input type="number" class="calculated" data-column="total" value="0" readonly></td>
-                        <td><button class="view-btn">📊</button></td>
-                    </tr>
+                    <!-- Rows will be dynamically inserted here -->
                 </tbody>
             </table>
 
             <div class="buttons-container">
                 <button id="add-row-btn">ADD</button>
                 <button id="submit-btn">Submit</button>
-            </div>
-
-            <div class="report-section">
-                <h2>Reports</h2>
-                <div class="date-range">
-                    <label for="from-date">From:</label>
-                    <input type="date" id="from-date">
-                    <label for="to-date">To:</label>
-                    <input type="date" id="to-date">
-                    <button id="download-range-btn">Download Range</button>
-                </div>
-                <ul id="report-list"></ul>
-                <button id="clear-reports-btn">Clear All Reports</button>
+                <button id="view-reports-btn">Report</button>
             </div>
         </div>
     </main>
@@ -74,11 +55,15 @@
         </div>
     </div>
 
-    <footer>
+    <div id="report-page" class="report-page">
         <div class="container">
-            <button id="report-btn">Report</button>
+            <button id="close-report-page-btn">Back to Main</button>
+            <h2>Saved Reports</h2>
+            <div id="report-list-container">
+                <!-- Reports will be dynamically inserted here -->
+            </div>
         </div>
-    </footer>
+    </div>
 
     <script src="script.js"></script>
 </body>
