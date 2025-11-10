@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const downloadAllReportsPDF = () => {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        let firstPage = true;
+        let finalY = 20; // Starting Y position for content
 
         const selectedDateCheckboxes = document.querySelectorAll('.select-date-checkbox:checked');
         if (selectedDateCheckboxes.length === 0) {
@@ -329,49 +329,175 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        selectedDateCheckboxes.forEach((checkbox, dateIdx) => {
+        const allSelectedReportsData = [];
+        const allDatesSummary = {}; // To store summary for each date
+
+        selectedDateCheckboxes.forEach(checkbox => {
             const dateKey = checkbox.dataset.date;
             const reportData = JSON.parse(localStorage.getItem(`report-${dateKey}`));
-            if (!reportData || reportData.length === 0) return;
+            if (reportData && reportData.length > 0) {
+                allSelectedReportsData.push({ dateKey, data: reportData });
 
-            if (!firstPage) {
-                doc.addPage();
+                // Calculate summary for this date
+                const summary = reportData.reduce((acc, row) => {
+                    acc.purchase += parseFloat(row.purchase) || 0;
+                    acc.bookings += parseFloat(row.bookings) || 0;
+                    acc.return += parseFloat(row.return) || 0;
+                    acc.sell += parseFloat(row.sell) || 0;
+                    acc.netValue += parseFloat(row.netValue) || 0;
+                    acc.vc += parseFloat(row.vc) || 0;
+                    acc.due += parseFloat(row.due) || 0;
+                    acc.paid += parseFloat(row.paid) || 0;
+                    acc.total += parseFloat(row.total) || 0;
+                    return acc;
+                }, { purchase: 0, bookings: 0, return: 0, sell: 0, netValue: 0, vc: 0, due: 0, paid: 0, total: 0 });
+                allDatesSummary[dateKey] = summary;
             }
-            firstPage = false;
+        });
 
-            doc.setFontSize(18);
-            doc.text(`Daily Business Snapshot Report`, 14, 22);
+        if (allSelectedReportsData.length === 0) {
+            alert('No data found for the selected reports.');
+            return;
+        }
+
+        // Sort reports by date (oldest first for summary table)
+        allSelectedReportsData.sort((a, b) => parseFormattedDate(a.dateKey) - parseFormattedDate(b.dateKey));
+
+        // --- Title ---
+        doc.setFontSize(18);
+        doc.text('Daily Business Snapshot', 14, finalY);
+        finalY += 8;
+        doc.setFontSize(11);
+        const firstDate = allSelectedReportsData[0].dateKey;
+        const lastDate = allSelectedReportsData[allSelectedReportsData.length - 1].dateKey;
+        doc.text(`From ${firstDate} To ${lastDate}`, 14, finalY);
+        finalY += 10;
+
+        // --- Summary of Total Row Values (Each Date) ---
+        doc.setFontSize(14);
+        doc.text('Summary of Total Row Values (Each Date)', 14, finalY);
+        finalY += 8;
+
+        const summaryHeaders = ['Date', 'Purchase', 'Booking', 'Return', 'SELL', 'Rate/PCS', 'NET VALUE', 'VC', 'Previous Due', 'Paid in A/C', 'TOTAL'];
+        const summaryBody = [];
+        let grandTotalSummary = { purchase: 0, bookings: 0, return: 0, sell: 0, netValue: 0, vc: 0, due: 0, paid: 0, total: 0 };
+
+        allSelectedReportsData.forEach(report => {
+            const summary = allDatesSummary[report.dateKey];
+            summaryBody.push([
+                report.dateKey,
+                summary.purchase.toFixed(2),
+                summary.bookings.toFixed(2),
+                summary.return.toFixed(2),
+                summary.sell.toFixed(2),
+                '-', // Rate/PCS is not a sum
+                summary.netValue.toFixed(2),
+                summary.vc.toFixed(2),
+                summary.due.toFixed(2),
+                summary.paid.toFixed(2),
+                summary.total.toFixed(2)
+            ]);
+            grandTotalSummary.purchase += summary.purchase;
+            grandTotalSummary.bookings += summary.bookings;
+            grandTotalSummary.return += summary.return;
+            grandTotalSummary.sell += summary.sell;
+            grandTotalSummary.netValue += summary.netValue;
+            grandTotalSummary.vc += summary.vc;
+            grandTotalSummary.due += summary.due;
+            grandTotalSummary.paid += summary.paid;
+            grandTotalSummary.total += summary.total;
+        });
+
+        summaryBody.push([
+            'Total Sum',
+            grandTotalSummary.purchase.toFixed(2),
+            grandTotalSummary.bookings.toFixed(2),
+            grandTotalSummary.return.toFixed(2),
+            grandTotalSummary.sell.toFixed(2),
+            '-',
+            grandTotalSummary.netValue.toFixed(2),
+            grandTotalSummary.vc.toFixed(2),
+            grandTotalSummary.due.toFixed(2),
+            grandTotalSummary.paid.toFixed(2),
+            grandTotalSummary.total.toFixed(2)
+        ]);
+
+        doc.autoTable({
+            startY: finalY,
+            head: [summaryHeaders],
+            body: summaryBody,
+            theme: 'grid',
+            styles: { fontSize: 8, cellPadding: 2 },
+            headStyles: { fillColor: [108, 122, 224], textColor: 255, fontStyle: 'bold' },
+            didDrawPage: function (data) {
+                finalY = data.cursor.y + 10; // Update finalY for next content
+            }
+        });
+
+        // --- Individual Date Reports ---
+        allSelectedReportsData.forEach((report, reportIndex) => {
+            if (reportIndex > 0 || finalY > doc.internal.pageSize.height - 50) { // Add page if not first report or content too long
+                doc.addPage();
+                finalY = 20;
+            }
+
             doc.setFontSize(14);
-            doc.text(`Date: ${dateKey}`, 14, 30);
-            doc.setFontSize(12);
-            doc.text(`Total Customers: ${reportData.length}`, 14, 38);
+            doc.text(`Date: ${report.dateKey}`, 14, finalY);
+            finalY += 8;
 
-            // Calculate summary for this date
-            const summary = reportData.reduce((acc, row) => {
-                acc.purchase += parseFloat(row.purchase) || 0;
-                acc.bookings += parseFloat(row.bookings) || 0;
-                acc.return += parseFloat(row.return) || 0;
-                acc.sell += parseFloat(row.sell) || 0;
-                acc.netValue += parseFloat(row.netValue) || 0;
-                acc.vc += parseFloat(row.vc) || 0;
-                acc.due += parseFloat(row.due) || 0;
-                acc.paid += parseFloat(row.paid) || 0;
-                acc.total += parseFloat(row.total) || 0;
-                return acc;
-            }, { purchase: 0, bookings: 0, return: 0, sell: 0, netValue: 0, vc: 0, due: 0, paid: 0, total: 0 });
+            const customerHeaders = ['Name', 'Purchase', 'Booking', 'Return', 'SELL', 'Rate/PCS', 'NET VALUE', 'VC', 'Previous Due', 'Paid in A/C', 'TOTAL'];
+            const customerBody = [];
+            let dateTotalSummary = { purchase: 0, bookings: 0, return: 0, sell: 0, netValue: 0, vc: 0, due: 0, paid: 0, total: 0 };
 
-            doc.text(`Summary for ${dateKey}:`, 14, 46);
-            doc.text(`Purchase: ${summary.purchase.toFixed(2)} | Bookings: ${summary.bookings.toFixed(2)} | Return: ${summary.return.toFixed(2)} | Sell: ${summary.sell.toFixed(2)}`, 14, 54);
-            doc.text(`Net Value: ${summary.netValue.toFixed(2)} | VC: ${summary.vc.toFixed(2)} | Previous Due: ${summary.due.toFixed(2)} | Paid: ${summary.paid.toFixed(2)} | Total: ${summary.total.toFixed(2)}`, 14, 62);
+            report.data.forEach(customer => {
+                customerBody.push([
+                    customer.name,
+                    parseFloat(customer.purchase).toFixed(2),
+                    parseFloat(customer.bookings).toFixed(2),
+                    parseFloat(customer.return).toFixed(2),
+                    parseFloat(customer.sell).toFixed(2),
+                    parseFloat(customer.rate).toFixed(2),
+                    parseFloat(customer.netValue).toFixed(2),
+                    parseFloat(customer.vc).toFixed(2),
+                    parseFloat(customer.due).toFixed(2),
+                    customer.paid, // Paid in A/C is text
+                    parseFloat(customer.total).toFixed(2)
+                ]);
+                dateTotalSummary.purchase += parseFloat(customer.purchase) || 0;
+                dateTotalSummary.bookings += parseFloat(customer.bookings) || 0;
+                dateTotalSummary.return += parseFloat(customer.return) || 0;
+                dateTotalSummary.sell += parseFloat(customer.sell) || 0;
+                dateTotalSummary.netValue += parseFloat(customer.netValue) || 0;
+                dateTotalSummary.vc += parseFloat(customer.vc) || 0;
+                dateTotalSummary.due += parseFloat(customer.due) || 0;
+                dateTotalSummary.paid += parseFloat(customer.paid) || 0;
+                dateTotalSummary.total += parseFloat(customer.total) || 0;
+            });
 
-
-            const tableHeaders = Object.keys(reportData[0]).map(key => key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1').trim());
-            const tableBodyData = reportData.map(customer => Object.values(customer));
+            customerBody.push([
+                'Total',
+                dateTotalSummary.purchase.toFixed(2),
+                dateTotalSummary.bookings.toFixed(2),
+                dateTotalSummary.return.toFixed(2),
+                dateTotalSummary.sell.toFixed(2),
+                '-',
+                dateTotalSummary.netValue.toFixed(2),
+                dateTotalSummary.vc.toFixed(2),
+                dateTotalSummary.due.toFixed(2),
+                dateTotalSummary.paid.toFixed(2),
+                dateTotalSummary.total.toFixed(2)
+            ]);
 
             doc.autoTable({
-                startY: 70,
-                head: [tableHeaders],
-                body: tableBodyData,
+                startY: finalY,
+                head: [customerHeaders],
+                body: customerBody,
+                theme: 'grid',
+                styles: { fontSize: 8, cellPadding: 2 },
+                headStyles: { fillColor: [108, 122, 224], textColor: 255, fontStyle: 'bold' },
+                didDrawPage: function (data) {
+                    finalY = data.cursor.y + 10;
+                }
             });
         });
 
