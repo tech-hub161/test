@@ -370,14 +370,354 @@ tfoot th {
 
 
 
-    .customer-select-wrapper {
+        .customer-select-wrapper {
 
-        display: flex;
 
-        align-items: center;
 
-        gap: 5px;
+            display: flex;
 
-    }
+
+
+            align-items: center;
+
+
+
+            gap: 5px;
+
+
+
+        }
+
+
+
+    
+
+
+
+        #select-all-dates-btn {
+
+
+
+            background-color: #28a745; /* Green color for select all */
+
+
+
+        }
+
+
+
+    
+
+
+
+        #select-all-dates-btn:hover {
+
+
+
+            background-color: #218838;
+
+
+
+        }
+
+
+
+    
+
+
+
+        .customer-list-scroll {
+
+
+
+            max-height: 150px; /* Fixed height for scrollbar */
+
+
+
+            overflow-y: auto;
+
+
+
+            overflow-x: hidden; /* Hide horizontal scrollbar initially */
+
+
+
+            transition: all 0.3s ease-in-out; /* Smooth transition for expansion */
+
+
+
+            white-space: nowrap; /* Keep items in a single line */
+
+
+
+            padding-bottom: 5px; /* Space for scrollbar */
+
+
+
+        }
+
+
+
+    
+
+
+
+        .customer-list-scroll.expanded {
+
+
+
+            overflow-x: auto; /* Show horizontal scrollbar on expand */
+
+
+
+            max-height: none; /* Allow full height on expand */
+
+
+
+        }
+
+
+
+    
+
+
+
+        .customer-list-scroll::-webkit-scrollbar {
+
+
+
+            height: 8px;
+
+
+
+        }
+
+
+
+    
+
+
+
+        .customer-list-scroll::-webkit-scrollbar-thumb {
+
+
+
+            background-color: #ccc;
+
+
+
+            border-radius: 4px;
+
+
+
+        }
+
+
+
+    
+
+
+
+        .customer-list-scroll::-webkit-scrollbar-track {
+
+
+
+            background-color: #f1f1f1;
+
+
+
+        }
+
+
+
+    
+
+
+
+        .customer-list-item {
+
+
+
+            display: flex;
+
+
+
+            align-items: center;
+
+
+
+            padding: 5px 0;
+
+
+
+            border-bottom: 1px dotted #eee;
+
+
+
+        }
+
+
+
+    
+
+
+
+        .customer-list-item:last-child {
+
+
+
+            border-bottom: none;
+
+
+
+        }
+
+
+
+    
+
+
+
+        .customer-list-item input[type="checkbox"] {
+
+
+
+            width: auto;
+
+
+
+            margin-right: 5px;
+
+
+
+        }
+
+
+
+    
+
+
+
+        .customer-list-item span {
+
+
+
+            flex-grow: 1;
+
+
+
+            overflow: hidden;
+
+
+
+            text-overflow: ellipsis;
+
+
+
+        }
+
+
+
+    
+
+
+
+        /* Vertical preview for customer data */
+
+
+
+        #report-preview-panel .customer-preview-card {
+
+
+
+            display: flex;
+
+
+
+            flex-direction: column;
+
+
+
+            gap: 5px;
+
+
+
+        }
+
+
+
+    
+
+
+
+        #report-preview-panel .preview-item {
+
+
+
+            flex-direction: column; /* Stack key-value vertically */
+
+
+
+            align-items: flex-start;
+
+
+
+            border-bottom: 1px solid #f0f0f0;
+
+
+
+            padding-bottom: 5px;
+
+
+
+        }
+
+
+
+    
+
+
+
+        #report-preview-panel .preview-item span:first-child {
+
+
+
+            font-size: 0.9em;
+
+
+
+            color: #777;
+
+
+
+        }
+
+
+
+    
+
+
+
+        #report-preview-panel .preview-item span:last-child {
+
+
+
+            font-size: 1.1em;
+
+
+
+            font-weight: bold;
+
+
+
+            color: #333;
+
+
+
+        }
+
+
+
+    
 
 

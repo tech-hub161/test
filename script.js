@@ -21,25 +21,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const exportJsonBtn = document.getElementById('export-json-btn');
     const importJsonBtn = document.getElementById('import-json-btn');
     const importJsonFile = document.getElementById('import-json-file');
+    const selectAllDatesBtn = document.getElementById('select-all-dates-btn');
+
 
     // --- State Management ---
     let customerIdCounter = 0;
-    let currentlyEditing = null; // { dateKey: 'DDMMYY', index: 0 }
+    let currentlyEditing = null; // { dateKey: 'DD-MM-YYYY', index: 0 }
 
     // --- Utility Functions ---
     const formatDate = (date) => {
         const d = new Date(date);
         const day = String(d.getDate()).padStart(2, '0');
         const month = String(d.getMonth() + 1).padStart(2, '0');
-        const year = String(d.getFullYear()).slice(-2);
-        return `${day}${month}${year}`;
+        const year = d.getFullYear();
+        return `${day}-${month}-${year}`;
     };
 
-    const parseFormattedDate = (ddmmyy) => {
-        const day = ddmmyy.slice(0, 2);
-        const month = ddmmyy.slice(2, 4);
-        const year = `20${ddmmyy.slice(4, 6)}`;
-        return new Date(`${year}-${month}-${day}T12:00:00`);
+    const parseFormattedDate = (ddmmyyyy) => {
+        const [day, month, year] = ddmmyyyy.split('-').map(Number);
+        return new Date(year, month - 1, day, 12, 0, 0); // Use noon to avoid timezone shifts
     };
 
     const validateRow = (row) => {
@@ -220,11 +220,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = 'report-card';
             
-            let options = '<option value="-1">Select a customer...</option>';
+            let customerListHtml = '';
             filteredReportData.forEach((customer, index) => {
-                // Find original index for editing/deleting
                 const originalIndex = reportData.findIndex(c => c.id === customer.id);
-                options += `<option value="${originalIndex}" data-date="${dateKey}">${customer.name}</option>`;
+                customerListHtml += `
+                    <div class="customer-list-item">
+                        <input type="checkbox" class="select-customer-checkbox" data-date="${dateKey}" data-index="${originalIndex}">
+                        <span>${customer.name}</span>
+                    </div>
+                `;
             });
 
             card.innerHTML = `
@@ -232,7 +236,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <input type="checkbox" class="select-date-checkbox" data-date="${dateKey}">
                     <h3>Report Date: ${dateKey}</h3>
                 </div>
-                <select class="customer-select">${options}</select>
+                <div class="customer-list-scroll">
+                    ${customerListHtml}
+                </div>
             `;
             reportListPanel.appendChild(card);
         });
