@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Business Snapshot</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <marquee class="marquee">Welcome to Daily Business Snapshot</marquee>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Daily Business Snapshot</h1>
+
+            <table id="data-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Purchase</th>
+                        <th>Return</th>
+                        <th>SELL</th>
+                        <th>Rate/PCS</th>
+                        <th>Net Value</th>
+                        <th>VC</th>
+                        <th>Previous Due</th>
+                        <th>TOTAL</th>
+                        <th>View</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Customer 1</td>
+                        <td><input type="number" class="editable" data-column="purchase" value="0"></td>
+                        <td><input type="number" class="editable" data-column="return" value="0"></td>
+                        <td><input type="number" class="calculated" data-column="sell" value="0" readonly></td>
+                        <td><input type="number" class="editable" data-column="rate" value="0"></td>
+                        <td><input type="number" class="calculated" data-column="net-value" value="0" readonly></td>
+                        <td><input type="number" class="editable" data-column="vc" value="0"></td>
+                        <td><input type="number" class="editable" data-column="due" value="0"></td>
+                        <td><input type="number" class="calculated" data-column="total" value="0" readonly></td>
+                        <td><button class="view-btn">📊</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="buttons-container">
+                <button id="add-row-btn">ADD</button>
+                <button id="submit-btn">Submit</button>
+            </div>
+
+            <div class="report-section">
+                <h2>Reports</h2>
+                <div class="date-range">
+                    <label for="from-date">From:</label>
+                    <input type="date" id="from-date">
+                    <label for="to-date">To:</label>
+                    <input type="date" id="to-date">
+                    <button id="download-range-btn">Download Range</button>
+                </div>
+                <ul id="report-list"></ul>
+                <button id="clear-reports-btn">Clear All Reports</button>
+            </div>
+        </div>
+    </main>
+
+    <div id="chart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="chart-title">Customer Data</h2>
+            <div id="chart-container"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
