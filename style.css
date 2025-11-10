@@ -181,36 +181,78 @@ button:hover {
     overflow-y: auto;
 }
 
-.report-group {
-    margin-bottom: 20px;
+#report-main-content {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+#report-list-panel {
+    flex: 1;
+    max-width: 400px;
+}
+
+#report-preview-panel {
+    flex: 2;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.report-card {
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.report-group h3 {
+.report-card h3 {
     margin-top: 0;
-    border-bottom: 2px solid #6c7ae0;
+    font-size: 1.1em;
+    border-bottom: 1px solid #eee;
     padding-bottom: 10px;
+    margin-bottom: 10px;
 }
 
-.customer-record {
+.report-card select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.customer-preview-card .preview-item {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
 }
 
-.customer-record:last-child {
-    border-bottom: none;
+.customer-preview-card .preview-item span:first-child {
+    font-weight: bold;
+    color: #555;
 }
 
-.customer-actions button {
-    margin-left: 5px;
-    padding: 5px 8px;
-    font-size: 0.9em;
+.preview-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+tfoot tr {
+    background-color: #e9ecef;
+    font-weight: bold;
+    border-top: 2px solid #6c7ae0;
+}
+
+tfoot td, tfoot th {
+    text-align: right;
+}
+
+tfoot th {
+    text-align: left;
 }
 
 
@@ -247,4 +289,95 @@ button:hover {
         content: attr(data-label);
         font-weight: bold;
     }
+
+    #report-main-content {
+        flex-direction: column;
+    }
+
+    #report-list-panel {
+        max-width: 100%;
+    }
 }
+
+.report-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+    .report-controls input[type="text"] {
+
+        flex: 1;
+
+        min-width: 150px;
+
+        max-width: 250px;
+
+    }
+
+
+
+    .report-controls button {
+
+        white-space: nowrap; /* Prevent button text from wrapping */
+
+    }
+
+
+
+    .danger-btn {
+
+        background-color: #dc3545;
+
+    }
+
+
+
+    .danger-btn:hover {
+
+        background-color: #c82333;
+
+    }
+
+
+
+    .report-card-header {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+
+        margin-bottom: 10px;
+
+    }
+
+
+
+    .report-card-header h3 {
+
+        margin: 0;
+
+        border-bottom: none;
+
+        padding-bottom: 0;
+
+    }
+
+
+
+    .customer-select-wrapper {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 5px;
+
+    }
+
+

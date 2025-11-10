@@ -20,25 +20,46 @@
                     <tr>
                         <th>Name</th>
                         <th>Purchase</th>
+                        <th>Bookings</th>
                         <th>Return</th>
                         <th>SELL</th>
                         <th>Rate/PCS</th>
                         <th>Net Value</th>
                         <th>VC</th>
                         <th>Previous Due</th>
+                        <th>Paid in A/Cs</th>
                         <th>TOTAL</th>
-                        <th>View</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Rows will be dynamically inserted here -->
                 </tbody>
+                <tfoot>
+                    <tr id="summary-row">
+                        <th>Summary</th>
+                        <td data-summary="purchase">0</td>
+                        <td data-summary="bookings">0</td>
+                        <td data-summary="return">0</td>
+                        <td data-summary="sell">0</td>
+                        <td>-</td>
+                        <td data-summary="net-value">0</td>
+                        <td data-summary="vc">0</td>
+                        <td data-summary="due">0</td>
+                        <td data-summary="paid">0</td>
+                        <td data-summary="total">0</td>
+                        <td>-</td>
+                    </tr>
+                </tfoot>
             </table>
 
             <div class="buttons-container">
                 <button id="add-row-btn">ADD</button>
                 <button id="submit-btn">Submit</button>
                 <button id="view-reports-btn">Report</button>
+                <button id="export-json-btn">Export JSON</button>
+                <input type="file" id="import-json-file" accept=".json" style="display: none;">
+                <button id="import-json-btn">Import JSON</button>
             </div>
         </div>
     </main>
@@ -55,12 +76,26 @@
         <div class="container">
             <button id="close-report-page-btn">Back to Main</button>
             <h2>Saved Reports</h2>
-            <div id="report-list-container">
-                <!-- Reports will be dynamically inserted here -->
+            <div class="report-controls">
+                <input type="text" id="search-by-date" placeholder="Search by Date (DDMMYY)...">
+                <input type="text" id="search-by-name" placeholder="Search by Customer Name...">
+                <button id="clear-all-data-btn" class="danger-btn">Clear All Data</button>
+                <button id="download-all-reports-btn">Download All Reports (PDF)</button>
+            </div>
+            <div id="report-main-content">
+                <div id="report-list-panel">
+                    <!-- Date-grouped cards with checkboxes will be dynamically inserted here -->
+                </div>
+                <div id="report-preview-panel">
+                    <!-- Selected customer details will be shown here -->
+                    <p>Select a customer from a report to see details.</p>
+                </div>
             </div>
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
