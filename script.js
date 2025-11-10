@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const day = ddmmyy.slice(0, 2);
         const month = ddmmyy.slice(2, 4);
         const year = `20${ddmmyy.slice(4, 6)}`;
-        return new Date(`${year}-${month}-${day}T00:00:00`); // Set time to avoid timezone issues
+        return new Date(`${year}-${month}-${day}T12:00:00`); // Use noon to avoid timezone shifts
     };
 
     // --- Core Table & Data Functions ---
@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const createRow = (customerData = {}) => {
         const row = tableBody.insertRow();
-        // Use text input for name to make it editable from the start
         row.innerHTML = `
             <td><input type="text" class="editable" data-column="name" value="${customerData.name || ''}"></td>
             <td><input type="number" class="editable" data-column="purchase" value="${customerData.purchase || 0}"></td>
@@ -83,12 +82,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const loadDataForDate = (dateKey) => {
         tableBody.innerHTML = '';
-        currentlyEditing = null; // Reset edit state when loading new date
+        currentlyEditing = null;
         const data = JSON.parse(localStorage.getItem(`report-${dateKey}`));
         if (data && data.length > 0) {
             data.forEach(createRow);
         } else {
-            createRow(); // Create a single empty row if no data
+            createRow();
         }
     };
 
@@ -101,16 +100,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (currentlyEditing) {
-            // Update existing record
             const { dateKey, index } = currentlyEditing;
             let reportData = JSON.parse(localStorage.getItem(`report-${dateKey}`)) || [];
-            reportData[index] = data[0]; // Assuming edit mode has only 1 row
+            reportData[index] = data[0];
             localStorage.setItem(`report-${dateKey}`, JSON.stringify(reportData));
             alert(`Record for ${data[0].name} on ${dateKey} updated!`);
             currentlyEditing = null;
         } else {
-            // Save new report for the selected date
-            const dateKey = formatDate(datePicker.value);
+            const dateToSave = datePicker.value ? new Date(datePicker.value) : new Date();
+            const dateKey = formatDate(dateToSave);
             localStorage.setItem(`report-${dateKey}`, JSON.stringify(data));
             alert(`Report for ${dateKey} saved!`);
         }
@@ -135,6 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
         reportKeys.forEach(key => {
             const dateKey = key.replace('report-', '');
             const reportData = JSON.parse(localStorage.getItem(key));
+            if (!reportData) return; // Skip if data is somehow null/invalid
             const groupDiv = document.createElement('div');
             groupDiv.className = 'report-group';
             groupDiv.innerHTML = `<h3>Report Date: ${dateKey}</h3>`;
@@ -175,8 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tableBody.innerHTML = '';
         createRow(customerData);
         
-        const date = parseFormattedDate(dateKey);
-        datePicker.valueAsDate = date;
+        datePicker.valueAsDate = parseFormattedDate(dateKey);
 
         currentlyEditing = { dateKey, index: customerIndex };
         reportPage.style.display = 'none';
@@ -214,7 +212,11 @@ document.addEventListener('DOMContentLoaded', () => {
     tableBody.addEventListener('input', (e) => e.target.closest('tr') && calculateRow(e.target.closest('tr')));
     addRowBtn.addEventListener('click', createRow);
     submitBtn.addEventListener('click', saveReport);
-    datePicker.addEventListener('change', () => loadDataForDate(formatDate(datePicker.value)));
+    datePicker.addEventListener('change', () => {
+        if (datePicker.value) {
+            loadDataForDate(formatDate(datePicker.value));
+        }
+    });
     viewReportsBtn.addEventListener('click', () => { renderReports(); reportPage.style.display = 'block'; });
     closeReportPageBtn.addEventListener('click', () => { reportPage.style.display = 'none'; });
     closeModalBtn.addEventListener('click', () => modal.style.display = 'none');
@@ -230,20 +232,21 @@ document.addEventListener('DOMContentLoaded', () => {
             if (confirm('Are you sure you want to delete this record?')) deleteCustomerData(date, customerIndex);
         } else if (button.classList.contains('download-customer-btn')) {
             const reportData = JSON.parse(localStorage.getItem(`report-${date}`));
-            downloadAsXLS([reportData[customerIndex]], `report-${date}-${reportData[customerIndex].name}.xls`);
+            if(reportData) downloadAsXLS([reportData[customerIndex]], `report-${date}-${reportData[customerIndex].name}.xls`);
         } else if (button.classList.contains('edit-customer-btn')) {
             editCustomerData(date, customerIndex);
         } else if (button.classList.contains('preview-customer-btn')) {
             const reportData = JSON.parse(localStorage.getItem(`report-${date}`));
-            showChart(reportData[customerIndex]);
+            if(reportData) showChart(reportData[customerIndex]);
         }
     });
 
     tableBody.addEventListener('click', (e) => {
         if (e.target.classList.contains('view-btn')) {
             const row = e.target.closest('tr');
-            const data = getTableData().find((_d, i) => i === row.rowIndex - 1);
-            showChart(data);
+            const rowIndex = Array.from(tableBody.children).indexOf(row);
+            const data = getTableData()[rowIndex];
+            if(data) showChart(data);
         }
     });
 
