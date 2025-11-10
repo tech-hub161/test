@@ -370,351 +370,379 @@ tfoot th {
 
 
 
-        .customer-select-wrapper {
+            .customer-select-wrapper {
 
 
 
-            display: flex;
+                display: flex;
 
 
 
-            align-items: center;
+                align-items: center;
 
 
 
-            gap: 5px;
+                gap: 5px;
 
 
 
-        }
+            }
 
 
 
-    
+        
 
 
 
-        #select-all-dates-btn {
+            #select-all-dates-btn {
 
 
 
-            background-color: #28a745; /* Green color for select all */
+                background-color: #28a745; /* Green color for select all */
 
 
 
-        }
+            }
 
 
 
-    
+        
 
 
 
-        #select-all-dates-btn:hover {
+            #select-all-dates-btn:hover {
 
 
 
-            background-color: #218838;
+                background-color: #218838;
 
 
 
-        }
+            }
 
 
 
-    
+        
 
 
 
-        .customer-list-scroll {
+            .customer-list-scroll {
 
 
 
-            max-height: 150px; /* Fixed height for scrollbar */
+                max-height: 150px; /* Fixed height for scrollbar */
 
 
 
-            overflow-y: auto;
+                overflow-y: auto;
 
 
 
-            overflow-x: hidden; /* Hide horizontal scrollbar initially */
+                overflow-x: hidden; /* Hide horizontal scrollbar initially */
 
 
 
-            transition: all 0.3s ease-in-out; /* Smooth transition for expansion */
+                transition: all 0.3s ease-in-out; /* Smooth transition for expansion */
 
 
 
-            white-space: nowrap; /* Keep items in a single line */
+                white-space: nowrap; /* Keep items in a single line */
 
 
 
-            padding-bottom: 5px; /* Space for scrollbar */
+                padding-bottom: 5px; /* Space for scrollbar */
 
 
 
-        }
+            }
 
 
 
-    
+        
 
 
 
-        .customer-list-scroll.expanded {
+            .customer-list-scroll.expanded {
 
 
 
-            overflow-x: auto; /* Show horizontal scrollbar on expand */
+                overflow-x: auto; /* Show horizontal scrollbar on expand */
 
 
 
-            max-height: none; /* Allow full height on expand */
+                max-height: none; /* Allow full height on expand */
 
 
 
-        }
+            }
 
 
 
-    
+        
 
 
 
-        .customer-list-scroll::-webkit-scrollbar {
+            .customer-list-scroll::-webkit-scrollbar {
 
 
 
-            height: 8px;
+                height: 8px;
 
 
 
-        }
+            }
 
 
 
-    
+        
 
 
 
-        .customer-list-scroll::-webkit-scrollbar-thumb {
+            .customer-list-scroll::-webkit-scrollbar-thumb {
 
 
 
-            background-color: #ccc;
+                background-color: #ccc;
 
 
 
-            border-radius: 4px;
+                border-radius: 4px;
 
 
 
-        }
+            }
 
 
 
-    
+        
 
 
 
-        .customer-list-scroll::-webkit-scrollbar-track {
+            .customer-list-scroll::-webkit-scrollbar-track {
 
 
 
-            background-color: #f1f1f1;
+                background-color: #f1f1f1;
 
 
 
-        }
+            }
 
 
 
-    
+        
 
 
 
-        .customer-list-item {
+            .customer-list-item {
 
 
 
-            display: flex;
+                display: flex;
 
 
 
-            align-items: center;
+                align-items: center;
 
 
 
-            padding: 5px 0;
+                padding: 5px 0;
 
 
 
-            border-bottom: 1px dotted #eee;
+                border-bottom: 1px dotted #eee;
 
 
 
-        }
+                cursor: pointer; /* Indicate clickable */
 
 
 
-    
+                transition: background-color 0.2s;
 
 
 
-        .customer-list-item:last-child {
+            }
 
 
 
-            border-bottom: none;
+        
 
 
 
-        }
+            .customer-list-item:hover {
 
 
 
-    
+                background-color: #e9ecef;
 
 
 
-        .customer-list-item input[type="checkbox"] {
+            }
 
 
 
-            width: auto;
+        
 
 
 
-            margin-right: 5px;
+            .customer-list-item:last-child {
 
 
 
-        }
+                border-bottom: none;
 
 
 
-    
+            }
 
 
 
-        .customer-list-item span {
+        
 
 
 
-            flex-grow: 1;
+            .customer-list-item input[type="checkbox"] {
 
 
 
-            overflow: hidden;
+                width: auto;
 
 
 
-            text-overflow: ellipsis;
+                margin-right: 5px;
 
 
 
-        }
+            }
 
 
 
-    
+        
 
 
 
-        /* Vertical preview for customer data */
+            .customer-list-item span {
 
 
 
-        #report-preview-panel .customer-preview-card {
+                flex-grow: 1;
 
 
 
-            display: flex;
+                overflow: hidden;
 
 
 
-            flex-direction: column;
+                text-overflow: ellipsis;
 
 
 
-            gap: 5px;
+            }
 
 
 
-        }
+        
 
 
 
-    
+            /* Vertical preview for customer data */
 
 
 
-        #report-preview-panel .preview-item {
+            #report-preview-panel .customer-preview-card {
 
 
 
-            flex-direction: column; /* Stack key-value vertically */
+                display: flex;
 
 
 
-            align-items: flex-start;
+                flex-direction: column;
 
 
 
-            border-bottom: 1px solid #f0f0f0;
+                gap: 5px;
 
 
 
-            padding-bottom: 5px;
+            }
 
 
 
-        }
+        
 
 
 
-    
+            #report-preview-panel .preview-item {
 
 
 
-        #report-preview-panel .preview-item span:first-child {
+                flex-direction: column; /* Stack key-value vertically */
 
 
 
-            font-size: 0.9em;
+                align-items: flex-start;
 
 
 
-            color: #777;
+                border-bottom: 1px solid #f0f0f0;
 
 
 
-        }
+                padding-bottom: 5px;
 
 
 
-    
+            }
 
 
 
-        #report-preview-panel .preview-item span:last-child {
+        
 
 
 
-            font-size: 1.1em;
+            #report-preview-panel .preview-item span:first-child {
 
 
 
-            font-weight: bold;
+                font-size: 0.9em;
 
 
 
-            color: #333;
+                color: #777;
 
 
 
-        }
+            }
+
+
+
+        
+
+
+
+            #report-preview-panel .preview-item span:last-child {
+
+
+
+                font-size: 1.1em;
+
+
+
+                font-weight: bold;
+
+
+
+                color: #333;
+
+
+
+            }
+
+
+
+        
 
 
 

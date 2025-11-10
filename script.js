@@ -224,9 +224,9 @@ document.addEventListener('DOMContentLoaded', () => {
             filteredReportData.forEach((customer, index) => {
                 const originalIndex = reportData.findIndex(c => c.id === customer.id);
                 customerListHtml += `
-                    <div class="customer-list-item">
+                    <div class="customer-list-item" data-date="${dateKey}" data-index="${originalIndex}">
                         <input type="checkbox" class="select-customer-checkbox" data-date="${dateKey}" data-index="${originalIndex}">
-                        <span>${customer.name}</span>
+                        <span class="customer-name-text">${customer.name}</span>
                     </div>
                 `;
             });
@@ -639,16 +639,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     closeReportPageBtn.addEventListener('click', () => { reportPage.style.display = 'none'; });
 
-    reportListPanel.addEventListener('change', (e) => {
-        if (e.target.classList.contains('customer-select')) {
-            const selectedOption = e.target.options[e.target.selectedIndex];
-            const customerIndex = selectedOption.value;
-            if (customerIndex >= 0) {
-                const dateKey = selectedOption.dataset.date;
-                displayCustomerPreview(dateKey, parseInt(customerIndex));
-            } else {
-                reportPreviewPanel.innerHTML = '<p>Select a customer from a report to see details.</p>';
-            }
+    reportListPanel.addEventListener('click', (e) => {
+        const customerListItem = e.target.closest('.customer-list-item');
+        if (customerListItem && e.target.tagName !== 'INPUT') { // Ensure click is not on checkbox
+            const dateKey = customerListItem.dataset.date;
+            const customerIndex = parseInt(customerListItem.dataset.index);
+            displayCustomerPreview(dateKey, customerIndex);
         }
     });
 
@@ -683,6 +679,12 @@ document.addEventListener('DOMContentLoaded', () => {
             renderReportCards(); // Clear report view
             reportPreviewPanel.innerHTML = '<p>Select a customer from a report to see details.</p>';
         }
+    });
+
+    selectAllDatesBtn.addEventListener('click', () => {
+        const allDateCheckboxes = document.querySelectorAll('.select-date-checkbox');
+        const allChecked = Array.from(allDateCheckboxes).every(cb => cb.checked);
+        allDateCheckboxes.forEach(cb => cb.checked = !allChecked);
     });
 
     downloadAllReportsBtn.addEventListener('click', downloadAllReportsPDF);
