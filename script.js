@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.innerHTML = `
                 <div class="report-card-header">
                     <input type="checkbox" class="select-date-checkbox" data-date="${dateKey}">
-                    <h3>Report Date: ${dateKey}</h3>
+                    <h3>Date: ${dateKey}</h3>
                 </div>
                 <div class="customer-list-scroll">
                     ${customerListHtml}
