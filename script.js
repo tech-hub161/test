@@ -231,13 +231,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             });
 
-            const date = parseFormattedDate(dateKey);
-            const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
-
             card.innerHTML = `
                 <div class="report-card-header">
                     <input type="checkbox" class="select-date-checkbox" data-date="${dateKey}">
-                    <h3>${dayName}, ${dateKey}</h3>
+                    <h3>${dateKey}</h3>
                 </div>
                 <div class="customer-list-scroll">
                     ${customerListHtml}
