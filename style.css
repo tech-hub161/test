@@ -345,73 +345,14 @@ tfoot th {
 
 
         .report-card-header {
+            /* Now only contains the h3 title */
+        }
 
-
-
+        .report-card-select-all {
             display: flex;
-
-
-
             align-items: center;
-
-
-
-            gap: 10px;
-
-
-
+            gap: 5px;
             margin-bottom: 10px;
-
-
-
-            justify-content: flex-start; /* Align to the left */
-
-
-
-        }
-
-
-
-    
-
-
-
-        .report-card-header input[type="checkbox"] {
-
-
-
-            flex-shrink: 0; /* Prevent checkbox from shrinking */
-
-
-
-        }
-
-
-
-    
-
-
-
-        .report-card-header h3 {
-
-
-
-            margin: 0;
-
-
-
-            border-bottom: none;
-
-
-
-            padding-bottom: 0;
-
-
-
-            white-space: nowrap; /* Keep title on one line */
-
-
-
         }
 
 

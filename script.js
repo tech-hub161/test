@@ -231,10 +231,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             });
 
+            const checkboxId = `select-all-${dateKey}`;
             card.innerHTML = `
                 <div class="report-card-header">
-                    <input type="checkbox" class="select-date-checkbox" data-date="${dateKey}">
-                    <h3>${dateKey}</h3>
+                    <h3>Report_${dateKey}</h3>
+                </div>
+                <div class="report-card-select-all">
+                    <input type="checkbox" class="select-date-checkbox" data-date="${dateKey}" id="${checkboxId}">
+                    <label for="${checkboxId}">Select All</label>
                 </div>
                 <div class="customer-list-scroll">
                     ${customerListHtml}
