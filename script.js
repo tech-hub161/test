@@ -231,14 +231,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             });
 
-            const checkboxId = `select-all-${dateKey}`;
             card.innerHTML = `
                 <div class="report-card-header">
                     <h3>Report_${dateKey}</h3>
-                </div>
-                <div class="report-card-select-all">
-                    <input type="checkbox" class="select-date-checkbox" data-date="${dateKey}" id="${checkboxId}">
-                    <label for="${checkboxId}">Select All</label>
+                    <input type="checkbox" class="select-date-checkbox" data-date="${dateKey}">
                 </div>
                 <div class="customer-list-scroll">
                     ${customerListHtml}
@@ -644,6 +640,17 @@ document.addEventListener('DOMContentLoaded', () => {
     closeReportPageBtn.addEventListener('click', () => { reportPage.style.display = 'none'; });
 
     reportListPanel.addEventListener('click', (e) => {
+        // Handle "Select All" checkbox for a date card
+        if (e.target.classList.contains('select-date-checkbox')) {
+            const checkbox = e.target;
+            const card = checkbox.closest('.report-card');
+            const customerCheckboxes = card.querySelectorAll('.select-customer-checkbox');
+            customerCheckboxes.forEach(customerCheckbox => {
+                customerCheckbox.checked = checkbox.checked;
+            });
+            return; // Stop further processing
+        }
+
         const customerListItem = e.target.closest('.customer-list-item');
         if (customerListItem && e.target.tagName !== 'INPUT') { // Ensure click is not on checkbox
             const dateKey = customerListItem.dataset.date;

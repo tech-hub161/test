@@ -345,13 +345,9 @@ tfoot th {
 
 
         .report-card-header {
-            /* Now only contains the h3 title */
-        }
-
-        .report-card-select-all {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 5px;
             margin-bottom: 10px;
         }
 
