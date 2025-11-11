@@ -214,6 +214,7 @@ button:hover {
     border-bottom: 1px solid #eee;
     padding-bottom: 5px; /* Reduced from 10px */
     margin-bottom: 5px; /* Reduced from 10px */
+    white-space: nowrap;
 }
 
 .report-card select {
