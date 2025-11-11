@@ -210,10 +210,10 @@ button:hover {
 
 .report-card h3 {
     margin-top: 0;
-    font-size: 1.1em;
+    font-size: 0.9em; /* Reduced from 1.1em */
     border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
+    padding-bottom: 5px; /* Reduced from 10px */
+    margin-bottom: 5px; /* Reduced from 10px */
 }
 
 .report-card select {
@@ -348,7 +348,7 @@ tfoot th {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 5px; /* Reduced from 10px */
         }
 
 
