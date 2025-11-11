@@ -214,7 +214,18 @@ button:hover {
     border-bottom: 1px solid #eee;
     padding-bottom: 5px; /* Reduced from 10px */
     margin-bottom: 5px; /* Reduced from 10px */
+}
+
+.report-card-header h3 {
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+    margin-right: 10px; /* Add some space between text and checkbox */
+}
+
+.report-card-header input[type="checkbox"] {
+    flex-shrink: 0;
 }
 
 .report-card select {
