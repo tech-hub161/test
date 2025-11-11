@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
             filteredReportData.forEach((customer, index) => {
                 const originalIndex = reportData.findIndex(c => c.id === customer.id);
                 customerListHtml += `
-                    <div class="customer-list-item" data-date="${dateKey}" data-index="${originalIndex}">
+                    <div class="customer-list-item" data-date="${dateKey}" data-index="${originalIndex}" tabindex="0">
                         <input type="checkbox" class="select-customer-checkbox" data-date="${dateKey}" data-index="${originalIndex}">
                         <span class="customer-name-text">${customer.name}</span>
                     </div>
@@ -647,6 +647,22 @@ document.addEventListener('DOMContentLoaded', () => {
             displayCustomerPreview(dateKey, customerIndex);
         }
     });
+
+    // Event listener for expanding/collapsing customer lists on hover
+    reportListPanel.addEventListener('mouseenter', (e) => {
+        const scrollContainer = e.target.closest('.customer-list-scroll');
+        if (scrollContainer) {
+            scrollContainer.classList.add('expanded');
+        }
+    }, true); // Use capture phase to catch event on parent
+
+    reportListPanel.addEventListener('mouseleave', (e) => {
+        const scrollContainer = e.target.closest('.customer-list-scroll');
+        if (scrollContainer) {
+            scrollContainer.classList.remove('expanded');
+        }
+    }, true); // Use capture phase to catch event on parent
+
 
     reportPreviewPanel.addEventListener('click', (e) => {
         const button = e.target.closest('button');
